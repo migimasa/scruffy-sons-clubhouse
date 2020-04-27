@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "msal": "^1.2.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-azure-b2c": "^0.2.8",
