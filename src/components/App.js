@@ -46,8 +46,8 @@ class App extends Component {
   }
 }
 
-App.proptypes = {
-  history: PropTypes.array,
+App.propTypes = {
+  history: PropTypes.object,
 };
 
 export default App;
