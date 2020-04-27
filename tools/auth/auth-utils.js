@@ -52,13 +52,12 @@ export const GRAPH_REQUESTS = {
 
 export const msalApp = new UserAgentApplication({
   auth: {
-    clientId: "e885ad7e-3044-4feb-bebe-597c812a4c74",
-    authority:
-      "https://scruffysons.b2clogin.com/tfp/scruffysons.onmicrosoft.com/B2C_1_SignUpIn/",
+    clientId: "",
+    authority: "",
     validateAuthority: false,
-    postLogoutRedirectUrl: "http://localhost:3010",
+    postLogoutRedirectUrl: "",
     navigateToLoginRequestUrl: false,
-    redirectUri: "http://localhost:3010",
+    redirectUri: "",
   },
   cache: {
     cacheLocation: "sessionStorage",

@@ -20,7 +20,8 @@ export default class Auth {
         clientId: process.env.REACT_APP_AZURE_B2C_CLIENTID,
         authority: process.env.REACT_APP_AZURE_B2C_AUTHORITY,
         validateAuthority: false,
-        postLogoutRedirectUrl: process.env.REACT_APP_AZURE_B2C_REDIRECT_URI,
+        postLogoutRedirectUrl:
+          process.env.REACT_APP_AZURE_B2C_POST_LOGOUT_REDIRECT_URI,
         navigateToLoginRequestUrl: false,
         redirectUri: process.env.REACT_APP_AZURE_B2C_REDIRECT_URI,
       },
