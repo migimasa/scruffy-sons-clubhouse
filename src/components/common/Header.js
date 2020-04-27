@@ -27,7 +27,6 @@ const Header = ({ auth }) => {
           <button onClick={isAuthenticated() ? logout : login}>
             {isAuthenticated() ? "Log Out" : "Log In"}
           </button>
-          s
         </li>
       </ul>
     </nav>

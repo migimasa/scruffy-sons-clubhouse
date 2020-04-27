@@ -7,6 +7,7 @@ import AboutPage from "./about/AboutPage";
 import AuthContext from "../../tools/auth/AuthContext";
 import Auth from "../../tools/auth/Auth";
 import PrivateRoute from "./common/PrivateRoute";
+import PropTypes from "prop-types";
 
 class App extends Component {
   constructor(props) {
@@ -29,9 +30,13 @@ class App extends Component {
     return (
       <AuthContext.Provider value={auth}>
         <div className="container-fluid">
-          <Header />
+          <Header auth={auth} />
           <Switch>
-            <Route exact path="/" component={HomePage} />
+            <Route
+              exact
+              path="/"
+              render={(props) => <HomePage auth={auth} {...props} />}
+            />
             <PrivateRoute path="/about" component={AboutPage} />
             <Route component={PageNotFound} />
           </Switch>
@@ -40,5 +45,9 @@ class App extends Component {
     );
   }
 }
+
+App.proptypes = {
+  history: PropTypes.array,
+};
 
 export default App;

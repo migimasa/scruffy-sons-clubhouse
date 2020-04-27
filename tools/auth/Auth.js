@@ -14,16 +14,15 @@ export default class Auth {
   constructor(history) {
     this.history = history;
     this.userProfile = null;
-    this.requestedScopes = "openid profile";
+    this.requestedScopes = ["openid", "profile"];
     this.msalApp = new UserAgentApplication({
       auth: {
         clientId: process.env.REACT_APP_AZURE_B2C_CLIENTID,
         authority: process.env.REACT_APP_AZURE_B2C_AUTHORITY,
         validateAuthority: false,
-        postLogoutRedirectUrl:
-          process.env.REACT_APP_AZURE_B2C_POST_LOGOUT_REDIRECT_URI,
         navigateToLoginRequestUrl: false,
         redirectUri: process.env.REACT_APP_AZURE_B2C_REDIRECT_URI,
+        postLogoutRedirectUri: process.env.REACT_APP_AZURE_B2C_REDIRECT_URI,
       },
       cache: {
         cacheLocation: "sessionStorage",
@@ -32,6 +31,7 @@ export default class Auth {
   }
 
   login = () => {
+    debugger;
     localStorage.setItem(
       REDIRECT_ON_LOGIN,
       JSON.stringify(this.history.location)
@@ -41,7 +41,12 @@ export default class Auth {
         scopes: this.requestedScopes,
       })
       .then((loginResponse) => {
+        debugger;
         this.setSession(loginResponse);
+      })
+      .catch((error) => {
+        debugger;
+        console.log(error);
       });
   };
 
@@ -92,8 +97,40 @@ export default class Auth {
     return scopes.every((scope) => grantedScopes.includes(scope));
   }
 
-  renewToken(cb) {
-    //TODO
+  requiresInteraction = (errorMessage) => {
+    if (!errorMessage || !errorMessage.length) {
+      return false;
+    }
+
+    return (
+      errorMessage.indexOf("consent_requried") > 1 ||
+      errorMessage.indexOf("interaction_required") > -1 ||
+      errorMessage.indexOf("login_required") > -1
+    );
+  };
+
+  async renewToken(cb) {
+    this.msalApp
+      .acquireTokenSilent({ scopes: this.requestedScopes })
+      .then((authResult) => {
+        this.setSession(authResult);
+      })
+      .catch((error) => {
+        // Call acquireTokenPopup (popup window) in case of acquireTokenSilent failure
+        // due to consent or interaction required ONLY
+        if (this.requiresInteraction(error.errorCode)) {
+          this.msalApp
+            .acquireTokenPopup({ scopes: this.requestedScopes })
+            .then((authResult) => {
+              this.setSession(authResult);
+            });
+        } else {
+          console.error("Non-interactive error:", error.errorCode);
+        }
+      })
+      .finally((authResult, error) => {
+        if (cb) cb(authResult, error);
+      });
   }
 
   scheduleTokenRenewal() {
