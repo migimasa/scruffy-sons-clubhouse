@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "auth0-js": "^9.13.2",
     "bootstrap": "^4.4.1",
     "dotenv-webpack": "^1.7.0",
     "msal": "^1.2.2",

@@ -1,4 +1,4 @@
-import { UserAgentApplication } from "msal";
+import auth0 from "auth0-js";
 import PropTypes from "prop-types";
 
 const REDIRECT_ON_LOGIN = "redirect_on_login";
@@ -14,50 +14,48 @@ export default class Auth {
   constructor(history) {
     this.history = history;
     this.userProfile = null;
-    this.requestedScopes = ["openid", "profile"];
-    this.msalApp = new UserAgentApplication({
-      auth: {
-        clientId: process.env.REACT_APP_AZURE_B2C_CLIENTID,
-        authority: process.env.REACT_APP_AZURE_B2C_AUTHORITY,
-        validateAuthority: false,
-        navigateToLoginRequestUrl: false,
-        redirectUri: process.env.REACT_APP_AZURE_B2C_REDIRECT_URI,
-        postLogoutRedirectUri: process.env.REACT_APP_AZURE_B2C_REDIRECT_URI,
-      },
-      cache: {
-        cacheLocation: "sessionStorage",
-      },
+    this.requestedScopes = "openid profile email read:courses";
+    this.auth0 = new auth0.WebAuth({
+      domain: process.env.REACT_APP_AUTH0_DOMAIN,
+      clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+      redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL,
+      audience: process.env.REACT_APP_AUTH0_CALLBACK_URL,
+      responseType: "token id_token",
+      scope: this.requestedScopes,
     });
   }
 
   login = () => {
-    debugger;
     localStorage.setItem(
       REDIRECT_ON_LOGIN,
       JSON.stringify(this.history.location)
     );
-    this.msalApp
-      .loginPopup({
-        scopes: this.requestedScopes,
-      })
-      .then((loginResponse) => {
-        debugger;
-        this.setSession(loginResponse);
-      })
-      .catch((error) => {
-        debugger;
-        console.log(error);
-      });
+    this.auth0.authorize();
   };
 
   handleAuthentication = () => {
-    //TODO
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.setSession(authResult);
+        const redirectLocation =
+          localStorage.getItem(REDIRECT_ON_LOGIN) === "undefined"
+            ? "/"
+            : JSON.parse(localStorage.getItem(REDIRECT_ON_LOGIN));
+        this.history.push(redirectLocation);
+      } else if (err) {
+        this.history.push("/");
+        alert(`Error: ${err.error}. Check the console for further details.`);
+        console.log(err);
+      }
+      localStorage.removeItem(REDIRECT_ON_LOGIN);
+    });
   };
 
   setSession = (authResult) => {
     console.log(authResult);
 
-    _expiresAt = authResult.expiresOn;
+    // set the time that the access token will expire
+    _expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
 
     // If there are scopes in the auth result use it to set
     // session scopes for the user. Otherwise, use the
@@ -74,7 +72,10 @@ export default class Auth {
   }
 
   logout = () => {
-    this.msalApp.logout();
+    this.auth0.logout({
+      clientID: process.env.REACT_APP_CLIENT_ID,
+      returnTo: process.env.REACT_APP_AUTH0_LOGOUT_URL,
+    });
   };
 
   getAccessToken = () => {
@@ -86,10 +87,10 @@ export default class Auth {
 
   getProfile = (callBack) => {
     if (this.userProfile) return callBack(this.userProfile);
-    const profile = this.msalApp.getAccount();
-
-    if (profile) this.userProfile = profile;
-    callBack(profile);
+    this.auth0.client.userInfo(this.getAccessToken(), (err, profile) => {
+      if (profile) this.userProfile = profile;
+      callBack(profile, err);
+    });
   };
 
   userHasScopes(scopes) {
@@ -97,40 +98,15 @@ export default class Auth {
     return scopes.every((scope) => grantedScopes.includes(scope));
   }
 
-  requiresInteraction = (errorMessage) => {
-    if (!errorMessage || !errorMessage.length) {
-      return false;
-    }
-
-    return (
-      errorMessage.indexOf("consent_requried") > 1 ||
-      errorMessage.indexOf("interaction_required") > -1 ||
-      errorMessage.indexOf("login_required") > -1
-    );
-  };
-
-  async renewToken(cb) {
-    this.msalApp
-      .acquireTokenSilent({ scopes: this.requestedScopes })
-      .then((authResult) => {
-        this.setSession(authResult);
-      })
-      .catch((error) => {
-        // Call acquireTokenPopup (popup window) in case of acquireTokenSilent failure
-        // due to consent or interaction required ONLY
-        if (this.requiresInteraction(error.errorCode)) {
-          this.msalApp
-            .acquireTokenPopup({ scopes: this.requestedScopes })
-            .then((authResult) => {
-              this.setSession(authResult);
-            });
-        } else {
-          console.error("Non-interactive error:", error.errorCode);
-        }
-      })
-      .finally((authResult, error) => {
-        if (cb) cb(authResult, error);
-      });
+  renewToken(cb) {
+    this.auth0.checkSession({}, (err, result) => {
+      if (err) {
+        console.log(`Error: ${err.error} - ${err.error_description}.`);
+      } else {
+        this.setSession(result);
+      }
+      if (cb) cb(err, result);
+    });
   }
 
   scheduleTokenRenewal() {

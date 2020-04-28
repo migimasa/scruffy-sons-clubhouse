@@ -8,6 +8,7 @@ import AuthContext from "../../tools/auth/AuthContext";
 import Auth from "../../tools/auth/Auth";
 import PrivateRoute from "./common/PrivateRoute";
 import PropTypes from "prop-types";
+import Callback from "./common/Callback";
 
 class App extends Component {
   constructor(props) {
@@ -36,6 +37,10 @@ class App extends Component {
               exact
               path="/"
               render={(props) => <HomePage auth={auth} {...props} />}
+            />
+            <Route
+              path="/callback"
+              render={(props) => <Callback auth={auth} {...props} />}
             />
             <PrivateRoute path="/about" component={AboutPage} />
             <Route component={PageNotFound} />
