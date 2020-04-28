@@ -3,12 +3,13 @@ import { Route, Switch } from "react-router-dom";
 import Header from "./common/Header";
 import HomePage from "./home/HomePage";
 import PageNotFound from "./PageNotFound";
-import AboutPage from "./about/AboutPage";
+// import AboutPage from "./about/AboutPage";
 import AuthContext from "../../tools/auth/AuthContext";
 import Auth from "../../tools/auth/Auth";
 import PrivateRoute from "./common/PrivateRoute";
 import PropTypes from "prop-types";
 import Callback from "./common/Callback";
+import ProfilePage from "./profile/ProfilePage";
 
 class App extends Component {
   constructor(props) {
@@ -30,8 +31,8 @@ class App extends Component {
     if (!this.state.tokenRenewalComplete) return "Loading...";
     return (
       <AuthContext.Provider value={auth}>
+        <Header auth={auth} />
         <div className="container-fluid">
-          <Header auth={auth} />
           <Switch>
             <Route
               exact
@@ -42,7 +43,7 @@ class App extends Component {
               path="/callback"
               render={(props) => <Callback auth={auth} {...props} />}
             />
-            <PrivateRoute path="/about" component={AboutPage} />
+            <PrivateRoute path="/profile" component={ProfilePage} />
             <Route component={PageNotFound} />
           </Switch>
         </div>

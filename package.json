@@ -7,6 +7,10 @@
     "auth0-js": "^9.13.2",
     "bootstrap": "^4.4.1",
     "dotenv-webpack": "^1.7.0",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.3",
+    "express-jwt-authz": "^2.3.1",
+    "jwks-rsa": "^1.8.0",
     "msal": "^1.2.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
@@ -15,9 +19,19 @@
     "react-router-dom": "^5.1.2"
   },
   "scripts": {
-    "start": "run-p start:dev",
+    "start": "run-p start:dev start:api",
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --port 3010",
+    "start:api": "node tools/server.js",
     "test": "jest --watch"
+  },
+  "jest": {
+    "setupFiles": [
+      "./tools/testSetup"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|git|eot|otf|webp|svg|ttf|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tools/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/tools/styleMock.js"
+    }
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

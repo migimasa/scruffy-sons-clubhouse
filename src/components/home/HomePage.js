@@ -9,7 +9,7 @@ const HomePage = ({ auth }) => {
     <div className="jumbotron">
       <h1>Scruffy Sons of Sadow Clubhouse</h1>
       {isAuthenticated() ? (
-        <Link to="/about">View About</Link>
+        <Link to="/profile">View profile</Link>
       ) : (
         <button onClick={login}>Log In</button>
       )}

@@ -14,12 +14,12 @@ export default class Auth {
   constructor(history) {
     this.history = history;
     this.userProfile = null;
-    this.requestedScopes = "openid profile email read:courses";
+    this.requestedScopes = "openid profile email";
     this.auth0 = new auth0.WebAuth({
       domain: process.env.REACT_APP_AUTH0_DOMAIN,
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
       redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL,
-      audience: process.env.REACT_APP_AUTH0_CALLBACK_URL,
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       responseType: "token id_token",
       scope: this.requestedScopes,
     });
@@ -119,4 +119,5 @@ Auth.propTypes = {
   isAuthenticated: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  getProfile: PropTypes.func.isRequired,
 };
