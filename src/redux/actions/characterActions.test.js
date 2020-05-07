@@ -18,7 +18,6 @@ describe("Async Actions", () => {
       fetchMock.mock("*", {
         body: characters,
         headers: { "content-type": "application/json" },
-        status: 200,
       });
 
       const expectedActions = [
@@ -27,8 +26,8 @@ describe("Async Actions", () => {
       ];
 
       const store = mockStore({ characters: [] });
-      return store.dispatch(characterActions.loadCharacters(1)).then(() => {
-        expectedActions(store.getActions()).toEqual(expectedActions);
+      return store.dispatch(characterActions.loadCharacters()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
       });
     });
   });

@@ -6,6 +6,7 @@
   "dependencies": {
     "auth0-js": "^9.13.2",
     "bootstrap": "^4.4.1",
+    "dotenv": "^8.2.0",
     "dotenv-webpack": "^1.7.0",
     "express": "^4.17.1",
     "express-jwt": "^5.3.3",
@@ -14,8 +15,8 @@
     "msal": "^1.2.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
-    "react-azure-b2c": "^0.2.8",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
@@ -24,12 +25,13 @@
     "start": "run-p start:dev start:api",
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --port 3010",
     "prestart:api": "node tools/createMockDb.js",
-    "start:api": "node tools/server.js",
+    "start:api": "node tools/apiServer.js",
     "test": "jest --watch"
   },
   "jest": {
     "setupFiles": [
-      "./tools/testSetup"
+      "./tools/testSetup.js",
+      "dotenv/config"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|git|eot|otf|webp|svg|ttf|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tools/fileMock.js",
@@ -52,6 +54,7 @@
     "fetch-mock-jest": "^1.3.0",
     "html-webpack-plugin": "^4.2.0",
     "jest": "^25.4.0",
+    "json-server": "^0.16.1",
     "node-fetch": "^2.6.0",
     "npm-run-all": "^4.1.5",
     "react-test-renderer": "^16.13.1",

@@ -2,14 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const CharacterList = ({ characters }) => {
+const CharacterList = ({ characters }) => (
   <table className="table">
     <thead>
-      <th>Name</th>
-      <th>Species</th>
-      <th>Career</th>
-      <th>Level</th>
-      <th />
+      <tr>
+        <th>Name</th>
+        <th>Species</th>
+        <th>Career</th>
+        <th>Level</th>
+        <th />
+      </tr>
     </thead>
 
     <tbody>
@@ -27,8 +29,8 @@ const CharacterList = ({ characters }) => {
         );
       })}
     </tbody>
-  </table>;
-};
+  </table>
+);
 
 CharacterList.propTypes = {
   characters: PropTypes.array.isRequired,

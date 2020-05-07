@@ -1,23 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const HomePage = ({ auth }) => {
-  const { isAuthenticated, login } = auth;
+const HomePage = () => (
+  <div className="jumbotron">
+    <h1>Scruffy Sons of Sadow</h1>
+    <p>A mediocre gang in a mediocre galaxy</p>
+    <Link to="about" className="btn btn-primary btn-lg">
+      Learn more
+    </Link>
+  </div>
+);
 
-  return (
-    <div className="jumbotron">
-      <h1>Scruffy Sons of Sadow Clubhouse</h1>
-      {isAuthenticated() ? (
-        <Link to="/profile">View profile</Link>
-      ) : (
-        <button onClick={login}>Log In</button>
-      )}
-    </div>
-  );
-};
-
-HomePage.propTypes = {
-  auth: PropTypes.object.isRequired,
-};
 export default HomePage;

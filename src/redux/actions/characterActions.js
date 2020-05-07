@@ -6,11 +6,11 @@ export function loadCharactersSuccess(characters) {
   return { type: types.LOAD_CHARACTERS_SUCCESS, characters };
 }
 
-export function loadCharacters(id) {
+export function loadCharacters() {
   return function (dispatch) {
     dispatch(beginApiCall());
     return characterApi
-      .getCharacters(id)
+      .getCharacters()
       .then((characters) => {
         dispatch(loadCharactersSuccess(characters));
       })
