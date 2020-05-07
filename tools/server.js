@@ -5,6 +5,7 @@ const jwksRsa = require("jwks-rsa"); // Retreive RSA keys from JSON Web Key set 
 // const checkScope = require("express-jwt-authz"); //Validate JWT Scopes
 const https = require("https");
 const fs = require("fs");
+const mockData = require("../tools/mockData");
 
 const checkJwt = jwt({
   // Dynamically provide a signing key based on the kid in the header
@@ -52,6 +53,14 @@ function checkRole(role) {
 app.get("/admin", checkJwt, checkRole("admin"), function (req, res) {
   res.json({
     message: "Hello from an admin API!",
+  });
+});
+
+app.get("characters/:playerId", checkJwt, function (req, res) {
+  res.json({
+    characters: mockData.characters.filter(
+      (c) => c.playerId === req.params.playerId
+    ),
   });
 });
 
