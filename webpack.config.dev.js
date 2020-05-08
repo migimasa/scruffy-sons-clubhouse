@@ -44,6 +44,28 @@ module.exports = {
         test: /(\.css)$/,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /(\.less)$/,
+        use: [
+          {
+            loader: "iso-morphic-style-loader",
+            options: {
+              singleton: true,
+            },
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                localIdentName: "[local]_[hash:base64:5]",
+              },
+              importLoaders: 1,
+              sourceMap: false,
+            },
+          },
+          "less-loader",
+        ],
+      },
     ],
   },
 };
