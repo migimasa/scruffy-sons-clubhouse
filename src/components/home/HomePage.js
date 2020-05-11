@@ -1,14 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
 
 const HomePage = () => (
-  <div className="jumbotron">
+  <Container className="jumbotron">
     <h1>Scruffy Sons of Sadow</h1>
     <p>A mediocre gang in a mediocre galaxy</p>
-    <Link to="about" className="btn btn-primary btn-lg">
+    <Button
+      variant="contained"
+      color="secondary"
+      component={RouterLink}
+      to="about"
+    >
       Learn more
-    </Link>
-  </div>
+    </Button>
+  </Container>
 );
 
 export default HomePage;

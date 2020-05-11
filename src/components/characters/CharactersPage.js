@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import CharacterList from "./CharacterList";
 import { Redirect } from "react-router-dom";
 import Spinner from "../common/Spinner";
+import Button from "@material-ui/core/Button";
 
 class CharactersPage extends React.Component {
   state = {
@@ -31,15 +32,16 @@ class CharactersPage extends React.Component {
           <Spinner />
         ) : (
           <>
-            <button
+            <Button
               style={{ marginBottom: 20 }}
-              className="btn btn-primary add-character"
+              variant="contained"
+              color="primary"
               onClick={() =>
                 this.setState({ redirectToAddCharacterPage: true })
               }
             >
               Add Character
-            </button>
+            </Button>
 
             <CharacterList characters={this.props.characters} />
           </>
