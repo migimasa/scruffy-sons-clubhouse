@@ -28,3 +28,5 @@ TextTabPanel.propTypes = {
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };
+
+export default TextTabPanel;
