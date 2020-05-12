@@ -1,7 +1,7 @@
 import thunk from "redux-thunk";
 import fetchMock from "fetch-mock";
 import configureMockStore from "redux-mock-store";
-import { characters } from "../../../tools/mockData";
+import { characters, backgrounds } from "../../../tools/mockData";
 import * as types from "./actionTypes";
 import * as characterActions from "./characterActions";
 
@@ -29,6 +29,27 @@ describe("Async Actions", () => {
       return store.dispatch(characterActions.loadCharacters()).then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
+    });
+  });
+
+  describe("Load Backgrounds Thunk", () => {
+    it("should create BEGIN_API_CALL and LOAD_CHARACTER_BACKGROUNDS_SUCCESS when loading character backgrounds", () => {
+      fetchMock.mock("*", {
+        body: backgrounds,
+        headers: { "content-type": "application/json" },
+      });
+
+      const expectedActions = [
+        { type: types.BEGIN_API_CALL },
+        { type: types.LOAD_CHARACTER_BACKGROUNDS_SUCCESS, backgrounds },
+      ];
+
+      const store = mockStore({ backgrounds: [] });
+      return store
+        .dispatch(characterActions.loadCharacterBackgrounds())
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
     });
   });
 });

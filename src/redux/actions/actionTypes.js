@@ -2,6 +2,8 @@ export const BEGIN_API_CALL = "BEGIN_API_CALL";
 export const API_CALL_ERROR = "API_CALL_ERROR";
 
 export const LOAD_CHARACTERS_SUCCESS = "LOAD_CHARACTERS_SUCCESS";
+export const LOAD_CHARACTER_BACKGROUNDS_SUCCESS =
+  "LOAD_CHARACTER_BACKGROUNDS_SUCCESS";
 
 // OPTIMISTIC TYPES
 // By convention, actions that end in "_SUCCESS" are assumed to have been the result of a completed
