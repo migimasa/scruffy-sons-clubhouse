@@ -29,7 +29,8 @@
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --port 3010",
     "prestart:api": "node tools/createMockDb.js",
     "start:api": "node tools/apiServer.js",
-    "test": "jest --watch --config=jest.config.json"
+    "test": "jest --config=jest.config.json",
+    "test:watch": "jest --watch --config=jest.config.json"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
