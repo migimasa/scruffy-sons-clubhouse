@@ -20,18 +20,21 @@ const SelectCharacterBackgroundPage = ({
   };
 
   return (
-    <Tabs
-      orientation="vertical"
-      variant="scrollable"
-      value={value}
-      onChange={handleChange}
-      aria-label="Character Backgrounds"
-      className={classes.tabs}
-    >
-      {backgrounds.map((bg, index) => {
-        return <Tab key={bg.id} label={bg.description} {...a11yProps(index)} />;
-      })}
-
+    <>
+      <Tabs
+        orientation="vertical"
+        variant="scrollable"
+        value={value}
+        onChange={handleChange}
+        aria-label="Character Backgrounds"
+        className={classes.tabs}
+      >
+        {backgrounds.map((bg, index) => {
+          return (
+            <Tab key={bg.id} label={bg.description} {...a11yProps(index)} />
+          );
+        })}
+      </Tabs>
       {backgrounds.map((bg, index) => {
         return (
           <TextTabPanel key={bg.id} value={value} index={index}>
@@ -39,7 +42,7 @@ const SelectCharacterBackgroundPage = ({
           </TextTabPanel>
         );
       })}
-    </Tabs>
+    </>
   );
 };
 
