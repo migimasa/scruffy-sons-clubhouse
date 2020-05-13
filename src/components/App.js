@@ -5,6 +5,7 @@ import HomePage from "./home/HomePage";
 import PageNotFound from "./PageNotFound";
 import AboutPage from "./about/AboutPage";
 import CharactersPage from "./characters/CharactersPage";
+import CreateCharacterWizardPage from "./characters/CreateCharacterWizardPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route exact path="/" component={HomePage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/characters" component={CharactersPage} />
+        <Route path="/character" component={CreateCharacterWizardPage} />
         <Route component={PageNotFound} />
       </Switch>
     </div>

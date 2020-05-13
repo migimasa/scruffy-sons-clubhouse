@@ -58,6 +58,7 @@ CharactersPage.propTypes = {
 };
 
 function mapStateToProps(state) {
+  debugger;
   return {
     characters: state.characters,
     loading: state.apiCallsInProgress > 0,

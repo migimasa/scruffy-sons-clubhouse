@@ -45,6 +45,15 @@ server.use((req, res, next) => {
   next();
 });
 
+server.post("/characters/", function (req, res, next) {
+  const error = validateCharacter(req.body);
+  if (error) {
+    res.status(400).send(error);
+  } else {
+    next();
+  }
+});
+
 // Use default router
 server.use(router);
 
@@ -55,3 +64,10 @@ server.listen(port, () => {
 });
 
 //Centeralized Logic
+
+function validateCharacter(character) {
+  if (!character.name) return "Name is required.";
+  if (!character.partyId) return "Party is required.";
+  if (!character.playerId) return "Player is required.";
+  return "";
+}

@@ -1,31 +1,29 @@
 import characterReducer from "./characterReducer";
 import * as actions from "../actions/characterActions";
 
-it("should load character backgrounds when passed LOAD_CHARACTER_BACKGROUNDS_SUCCESS", () => {
+it("should add character when passed CREATE_CHARACTER_SUCCESS", () => {
   // arrange
   const initialState = [
     {
-      id: 1,
-      description: "Background One",
-      descriptionDetail: "Detail",
+      name: "Han Solo",
     },
     {
-      id: 2,
-      description: "Background Two",
-      descriptionDetail: "Detail",
-    },
-    {
-      id: 3,
-      description: "Background Three",
-      descriptionDetail: "Detail",
+      name: "Chewbacca",
     },
   ];
 
-  const action = actions.loadCharacterBackgroundsSuccess(initialState);
+  const newCharacter = {
+    name: "Boba Fett",
+  };
+
+  const action = actions.createCharacterSuccess(newCharacter);
 
   // act
   const newState = characterReducer(initialState, action);
 
   // assert
   expect(newState.length).toEqual(3);
+  expect(newState[0].name).toEqual("Han Solo");
+  expect(newState[1].name).toEqual("Chewbacca");
+  expect(newState[2].name).toEqual("Boba Fett");
 });

@@ -8,6 +8,8 @@ export default function characterReducer(
   switch (action.type) {
     case types.LOAD_CHARACTERS_SUCCESS:
       return action.characters;
+    case types.CREATE_CHARACTER_SUCCESS:
+      return [...state, { ...action.character }];
     default:
       return state;
   }

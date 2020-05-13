@@ -1,26 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
+import TextTabPanel from "../common/TextTabPanel";
 
 const SelectCharacterBackgroundPage = ({
-  character,
   backgrounds,
-  onNext,
-  onCancel,
-  saving = false,
-  errors = {},
+  // onNext,
+  // onCancel,
+  // saving = false,
+  // errors = {},
 }) => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (backgrounds.length === 0) {
-      loadCharacterBackgrounds().catch((err) => {
-        alert("Loading character backgrounds failed" + err);
-      });
-    }
-  }, character);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -34,7 +27,19 @@ const SelectCharacterBackgroundPage = ({
       onChange={handleChange}
       aria-label="Character Backgrounds"
       className={classes.tabs}
-    ></Tabs>
+    >
+      {backgrounds.map((bg, index) => {
+        return <Tab key={bg.id} label={bg.description} {...a11yProps(index)} />;
+      })}
+
+      {backgrounds.map((bg, index) => {
+        return (
+          <TextTabPanel key={bg.id} value={value} index={index}>
+            {bg.descriptionDetail}
+          </TextTabPanel>
+        );
+      })}
+    </Tabs>
   );
 };
 
@@ -56,5 +61,13 @@ function a11yProps(index) {
     "aria-controls": `vertical-tabpanel-${index}`,
   };
 }
+
+SelectCharacterBackgroundPage.propTypes = {
+  backgrounds: PropTypes.array.isRequired,
+  onNext: PropTypes.func,
+  onCancel: PropTypes.func,
+  errors: PropTypes.object,
+  saving: PropTypes.bool,
+};
 
 export default SelectCharacterBackgroundPage;

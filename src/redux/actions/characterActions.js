@@ -6,10 +6,6 @@ export function loadCharactersSuccess(characters) {
   return { type: types.LOAD_CHARACTERS_SUCCESS, characters };
 }
 
-export function loadCharacterBackgroundsSuccess(backgrounds) {
-  return { type: types.LOAD_CHARACTER_BACKGROUNDS_SUCCESS, backgrounds };
-}
-
 export function createCharacterSuccess(character) {
   return { type: types.CREATE_CHARACTER_SUCCESS, character };
 }
@@ -29,13 +25,14 @@ export function loadCharacters() {
   };
 }
 
-export function loadCharacterBackgrounds() {
-  return function (dispatch) {
+export function saveCharacter(character) {
+  //eslint-disable-next-line no-unused-vars
+  return function (dispatch, getState) {
     dispatch(beginApiCall());
     return characterApi
-      .getCharacterBackgrounds()
-      .then((backgrounds) => {
-        dispatch(loadCharacterBackgroundsSuccess(backgrounds));
+      .saveCharacter(character)
+      .then((savedCharacter) => {
+        dispatch(createCharacterSuccess(savedCharacter));
       })
       .catch((error) => {
         dispatch(apiCallError(error));

@@ -8,7 +8,14 @@ export function getCharacters() {
   return fetch(url).then(handleResponse).catch(handleError);
 }
 
-export function getCharacterBackgrounds() {
-  const url = `${baseUrl}/backgrounds/`;
-  return fetch(url).then(handleResponse).catch(handleError);
+export function saveCharacter(character) {
+  const url = `${baseUrl}/characters/`;
+
+  return fetch(url, {
+    method: "POST",
+    header: { "content-type": "application/json" },
+    body: JSON.stringify(character),
+  })
+    .then(handleResponse)
+    .catch(handleError);
 }
