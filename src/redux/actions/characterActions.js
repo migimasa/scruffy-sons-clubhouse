@@ -10,6 +10,10 @@ export function loadCharacterBackgroundsSuccess(backgrounds) {
   return { type: types.LOAD_CHARACTER_BACKGROUNDS_SUCCESS, backgrounds };
 }
 
+export function createCharacterSuccess(character) {
+  return { type: types.CREATE_CHARACTER_SUCCESS, character };
+}
+
 export function loadCharacters() {
   return function (dispatch) {
     dispatch(beginApiCall());

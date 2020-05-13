@@ -53,3 +53,20 @@ describe("Async Actions", () => {
     });
   });
 });
+
+describe("createCharacterSuccess", () => {
+  it("should create a CREATE_CHARACTER_SUCCESS action", () => {
+    // arrange
+    const character = characters[0];
+    const expectedAction = {
+      type: types.CREATE_CHARACTER_SUCCESS,
+      character,
+    };
+
+    // act
+    const action = characterActions.createCharacterSuccess(character);
+
+    // assert
+    expect(action).toEqual(expectedAction);
+  });
+});
