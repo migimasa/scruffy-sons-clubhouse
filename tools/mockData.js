@@ -99,8 +99,19 @@ const hooks = [
   },
 ];
 
+const newCharacter = {
+  id: null,
+  name: "",
+  species: "",
+  career: "",
+  specializations: [],
+  playerId: null,
+  level: 1,
+};
+
 module.exports = {
   characters,
   backgrounds,
   hooks,
+  newCharacter,
 };

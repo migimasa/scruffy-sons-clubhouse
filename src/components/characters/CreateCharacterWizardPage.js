@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StepWizard from "react-step-wizard";
 import CharacterWizardNav from "./CharacterWizardNav";
 import PropTypes from "prop-types";
+import { newCharacter } from "../../../tools/mockData";
+import { loadCharacterBackgrounds } from "../../redux/actions/characterActions";
+import { connect } from "react-redux";
 
 import styles from "./CreateCharacterWizardPage.less";
 import transitions from "./CharacterWizardTransitions.less";
 
 const CreateCharacterWizardPage = ({
-  character,
   backgrounds,
-  hooks,
-  errors = {},
+  loadCharacterBackgrounds,
+  ...props
 }) => {
   const [state, updateState] = useState({
     form: {},
@@ -22,6 +24,17 @@ const CreateCharacterWizardPage = ({
       intro: `${transitions.animated} ${transitions.intro}`,
     },
   });
+  const [character, setCharacter] = useState({ ...props.character });
+  const [errors, setErrors] = useState({});
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (backgrounds.length === 0) {
+      loadCharacterBackgrounds().catch((error) => {
+        alert("Loading character backgrounds failed" + error);
+      });
+    }
+  }, [character]);
 
   const updateForm = (key, value) => {
     const { form } = state;
@@ -70,7 +83,24 @@ CreateCharacterWizardPage.propTypes = {
   character: PropTypes.object.isRequired,
   backgrounds: PropTypes.array.isRequired,
   hooks: PropTypes.array.isRequired,
+  loadCharacterBackgrounds: PropTypes.func.isRequired,
   errors: PropTypes.object,
 };
 
-export default CreateCharacterWizardPage;
+function mapStateToProps(state) {
+  const character = newCharacter;
+
+  return {
+    character,
+    backgrounds: state.backgrounds,
+  };
+}
+
+const mapDispatchToProps = {
+  loadCharacterBackgrounds,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateCharacterWizardPage);
