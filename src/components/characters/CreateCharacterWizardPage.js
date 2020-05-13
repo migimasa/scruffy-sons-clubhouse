@@ -6,6 +6,7 @@ import { newCharacter } from "../../../tools/mockData";
 import { loadCharacterBackgrounds } from "../../redux/actions/backgroundActions";
 import { connect } from "react-redux";
 import SelectCharacterBackgroundPage from "./SelectCharacterBackgroundPage";
+import Container from "@material-ui/core/Container";
 
 import styles from "./CreateCharacterWizardPage.less";
 import transitions from "./CharacterWizardTransitions.less";
@@ -93,32 +94,26 @@ const CreateCharacterWizardPage = ({ backgrounds, ...props }) => {
     });
 
   return (
-    <div className="container">
+    <>
       <h3>Create a New Character</h3>
-      <div className={"jumbotron"}>
-        <div className="row">
-          <div
-            className={`col-12 col-sm-6 offset-sm-31 ${styles["rsw-wrapper"]}`}
-          >
-            <StepWizard
-              onStepChange={onStepChange}
-              isHashEnabled
-              transitions={state.transitions}
-              nav={<CharacterWizardNav />}
-              instance={setInstance}
-            >
-              <SelectCharacterBackgroundPage
-                hashKey={"FirstStep"}
-                backgrounds={backgrounds}
-                errors={errors}
-                saving={saving}
-              />
-              <Last hashKey={"TheEnd!"} />
-            </StepWizard>
-          </div>
-        </div>
-      </div>
-    </div>
+      <Container className="jumbotron">
+        <StepWizard
+          onStepChange={onStepChange}
+          isHashEnabled
+          transitions={state.transitions}
+          nav={<CharacterWizardNav />}
+          instance={setInstance}
+        >
+          <SelectCharacterBackgroundPage
+            hashKey={"FirstStep"}
+            backgrounds={backgrounds}
+            errors={errors}
+            saving={saving}
+          />
+          <Last hashKey={"TheEnd!"} />
+        </StepWizard>
+      </Container>
+    </>
   );
 };
 

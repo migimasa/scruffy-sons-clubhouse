@@ -16,6 +16,7 @@ const SelectCharacterBackgroundPage = ({
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
+    debugger;
     setValue(newValue);
   };
 
