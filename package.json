@@ -29,7 +29,7 @@
     "start:dev": "webpack-dev-server --config webpack.config.dev.js --port 3010",
     "prestart:api": "node tools/createMockDb.js",
     "start:api": "node tools/apiServer.js",
-    "test": "jest --config=jest.config.json --testPathIgnorePatterns ./src/redux/actions/characterActions.test.js",
+    "test": "jest --config=jest.config.json --testPathIgnorePatterns ./src/redux/actions/*.test.js",
     "test:watch": "jest --watch --config=jest.config.json"
   },
   "devDependencies": {
