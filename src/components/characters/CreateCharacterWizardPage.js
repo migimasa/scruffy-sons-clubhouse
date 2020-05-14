@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import StepWizard from "react-step-wizard";
-import CharacterWizardNav from "./CharacterWizardNav";
+import CharacterWizardProgress from "./CharacterWizardProgress";
 import PropTypes from "prop-types";
 import { newCharacter } from "../../../tools/mockData";
 import { loadCharacterBackgrounds } from "../../redux/actions/backgroundActions";
 import { connect } from "react-redux";
 import SelectCharacterBackgroundPage from "./SelectCharacterBackgroundPage";
 import Container from "@material-ui/core/Container";
+import CharacterWizardNavigation from "./CharacterWizardNavigation";
 
 import styles from "./CreateCharacterWizardPage.less";
 import transitions from "./CharacterWizardTransitions.less";
@@ -101,7 +102,7 @@ const CreateCharacterWizardPage = ({ backgrounds, ...props }) => {
           onStepChange={onStepChange}
           isHashEnabled
           transitions={state.transitions}
-          nav={<CharacterWizardNav />}
+          nav={<CharacterWizardProgress />}
           instance={setInstance}
         >
           <SelectCharacterBackgroundPage
@@ -142,7 +143,7 @@ export default connect(
   mapDispatchToProps
 )(CreateCharacterWizardPage);
 
-const Last = () => {
+const Last = (...props) => {
   // const submit = () => {
   //   alert("You did it! Yay!"); //eslint-disable-line
   // };
@@ -153,6 +154,7 @@ const Last = () => {
         <h3>This is the last step in the example!</h3>
         <hr />
       </div>
+      <CharacterWizardNavigation step={2} {...props} />
     </div>
   );
 };

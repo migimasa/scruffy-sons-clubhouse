@@ -4,6 +4,7 @@ import Tab from "@material-ui/core/Tab";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import TextTabPanel from "../common/TextTabPanel";
+import CharacterWizardNavigation from "./CharacterWizardNavigation";
 
 const SelectCharacterBackgroundPage = ({
   backgrounds,
@@ -11,12 +12,13 @@ const SelectCharacterBackgroundPage = ({
   // onCancel,
   // saving = false,
   // errors = {},
+  ...props
 }) => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  debugger;
 
   const handleChange = (event, newValue) => {
-    debugger;
     setValue(newValue);
   };
 
@@ -43,6 +45,7 @@ const SelectCharacterBackgroundPage = ({
           </TextTabPanel>
         );
       })}
+      <CharacterWizardNavigation step={1} {...props} />
     </>
   );
 };
