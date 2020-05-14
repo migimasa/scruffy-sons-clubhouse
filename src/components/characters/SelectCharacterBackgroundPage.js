@@ -5,6 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import TextTabPanel from "../common/TextTabPanel";
 import CharacterWizardNavigation from "./CharacterWizardNavigation";
+import AppBar from "@material-ui/core/AppBar";
+import Typography from "@material-ui/core/Typography";
 
 const SelectCharacterBackgroundPage = ({
   backgrounds,
@@ -16,7 +18,6 @@ const SelectCharacterBackgroundPage = ({
 }) => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  debugger;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -24,28 +25,50 @@ const SelectCharacterBackgroundPage = ({
 
   return (
     <>
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        aria-label="Character Backgrounds"
-        className={classes.tabs}
-      >
-        {backgrounds.map((bg, index) => {
-          return (
-            <Tab key={bg.id} label={bg.description} {...a11yProps(index)} />
-          );
-        })}
-      </Tabs>
-      {backgrounds.map((bg, index) => {
-        return (
-          <TextTabPanel key={bg.id} value={value} index={index}>
-            {bg.descriptionDetail}
-          </TextTabPanel>
-        );
-      })}
-      <CharacterWizardNavigation step={1} {...props} />
+      <div className={classes.root}>
+        <AppBar position="static" color="default">
+          <Tabs
+            variant="fullWidth"
+            value={value}
+            onChange={handleChange}
+            aria-label="Character Backgrounds"
+            indicatorColor="primary"
+            textColor="primary"
+            scrollbuttons="auto"
+            centered
+          >
+            {backgrounds
+              .filter((bg) => bg.showInSelection)
+              .map((bg, index) => {
+                return (
+                  <Tab
+                    key={bg.id}
+                    label={bg.description}
+                    {...a11yProps(index)}
+                  />
+                );
+              })}
+          </Tabs>
+        </AppBar>
+
+        {backgrounds
+          .filter((bg) => bg.showInSelection)
+          .map((bg, index) => {
+            return (
+              <TextTabPanel
+                key={bg.id}
+                value={value}
+                index={index}
+                className={classes.card}
+              >
+                <Typography variant="body1" gutterBottom>
+                  {bg.descriptionDetail}
+                </Typography>
+              </TextTabPanel>
+            );
+          })}
+        <CharacterWizardNavigation step={1} {...props} />
+      </div>
     </>
   );
 };
@@ -53,19 +76,18 @@ const SelectCharacterBackgroundPage = ({
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    width: "100%",
     backgroundColor: theme.palette.background.paper,
-    display: "flex",
-    height: 224,
   },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`,
+  card: {
+    height: 200,
   },
 }));
 
 function a11yProps(index) {
   return {
-    id: `vertical-tab-${index}`,
-    "aria-controls": `vertical-tabpanel-${index}`,
+    id: `background-tab-${index}`,
+    "aria-controls": `background-tabpanel-${index}`,
   };
 }
 

@@ -4,15 +4,17 @@ import CharacterWizardProgress from "./CharacterWizardProgress";
 import PropTypes from "prop-types";
 import { newCharacter } from "../../../tools/mockData";
 import { loadCharacterBackgrounds } from "../../redux/actions/backgroundActions";
+import { loadCharacterHooks } from "../../redux/actions/hookActions";
 import { connect } from "react-redux";
 import SelectCharacterBackgroundPage from "./SelectCharacterBackgroundPage";
+import SelectCharacterHookPage from "./SelectCharacterHookPage";
 import Container from "@material-ui/core/Container";
 import CharacterWizardNavigation from "./CharacterWizardNavigation";
 
 import styles from "./CreateCharacterWizardPage.less";
 import transitions from "./CharacterWizardTransitions.less";
 
-const CreateCharacterWizardPage = ({ backgrounds, ...props }) => {
+const CreateCharacterWizardPage = ({ backgrounds, hooks, ...props }) => {
   const [state, updateState] = useState({
     form: {},
     transitions: {
@@ -28,11 +30,16 @@ const CreateCharacterWizardPage = ({ backgrounds, ...props }) => {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const { loadCharacterBackgrounds } = props;
-    debugger;
+    const { loadCharacterBackgrounds, loadCharacterHooks } = props;
     if (backgrounds.length === 0) {
       loadCharacterBackgrounds().catch((error) => {
         alert("Loading character backgrounds failed" + error);
+      });
+    }
+
+    if (hooks.length === 0) {
+      loadCharacterHooks().catch((error) => {
+        alert("Loading character hooks failed" + error);
       });
     }
   }, [character]);
@@ -106,8 +113,14 @@ const CreateCharacterWizardPage = ({ backgrounds, ...props }) => {
           instance={setInstance}
         >
           <SelectCharacterBackgroundPage
-            hashKey={"FirstStep"}
+            hashKey={"CharacterBackground"}
             backgrounds={backgrounds}
+            errors={errors}
+            saving={saving}
+          />
+          <SelectCharacterHookPage
+            hashKey={"CharacterHooks"}
+            hooks={hooks}
             errors={errors}
             saving={saving}
           />
@@ -121,7 +134,9 @@ const CreateCharacterWizardPage = ({ backgrounds, ...props }) => {
 CreateCharacterWizardPage.propTypes = {
   character: PropTypes.object.isRequired,
   backgrounds: PropTypes.array.isRequired,
+  hooks: PropTypes.array.isRequired,
   loadCharacterBackgrounds: PropTypes.func.isRequired,
+  loadCharacterHooks: PropTypes.func.isRequired,
   errors: PropTypes.object,
 };
 
@@ -131,11 +146,13 @@ function mapStateToProps(state) {
   return {
     character,
     backgrounds: state.backgrounds,
+    hooks: state.hooks,
   };
 }
 
 const mapDispatchToProps = {
   loadCharacterBackgrounds,
+  loadCharacterHooks,
 };
 
 export default connect(
@@ -144,9 +161,9 @@ export default connect(
 )(CreateCharacterWizardPage);
 
 const Last = (...props) => {
-  // const submit = () => {
-  //   alert("You did it! Yay!"); //eslint-disable-line
-  // };
+  const submit = () => {
+    alert("You did it! Yay!"); //eslint-disable-line
+  };
 
   return (
     <div>
@@ -154,7 +171,7 @@ const Last = (...props) => {
         <h3>This is the last step in the example!</h3>
         <hr />
       </div>
-      <CharacterWizardNavigation step={2} {...props} />
+      <CharacterWizardNavigation step={3} {...props} nextStep={submit} />
     </div>
   );
 };

@@ -8,7 +8,6 @@ export function loadCharacterBackgroundsSuccess(backgrounds) {
 
 export function loadCharacterBackgrounds() {
   return function (dispatch) {
-    debugger;
     dispatch(beginApiCall());
     return backgroundApi
       .getCharacterBackgrounds()

@@ -1,39 +1,63 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-const CharacterList = ({ characters }) => (
-  <table className="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Species</th>
-        <th>Career</th>
-        <th>Level</th>
-        <th />
-      </tr>
-    </thead>
+const CharacterList = ({ characters }) => {
+  const classes = useStyles();
 
-    <tbody>
-      {characters.map((character) => {
-        return (
-          <tr key={character.id}>
-            <td>
-              <Link to={"/character/" + character.id}>{character.name}</Link>
-            </td>
-            <td>{character.species}</td>
-            <td>{character.career}</td>
-            <td>{character.level}</td>
-            <td></td>
-          </tr>
-        );
-      })}
-    </tbody>
-  </table>
-);
+  return (
+    <TableContainer component={Paper}>
+      <Table aria-label="character table" className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell>Species</TableCell>
+            <TableCell>Career</TableCell>
+            <TableCell>Level</TableCell>
+            <TableCell />
+          </TableRow>
+        </TableHead>
+
+        <TableBody>
+          {characters.map((character) => {
+            return (
+              <TableRow key={character.id}>
+                <TableCell>
+                  <Link to={"/character/" + character.id}>
+                    {character.name}
+                  </Link>
+                </TableCell>
+                <TableCell>{character.species}</TableCell>
+                <TableCell>{character.career}</TableCell>
+                <TableCell>{character.level}</TableCell>
+                <TableCell />
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
 CharacterList.propTypes = {
   characters: PropTypes.array.isRequired,
 };
+
+const useStyles = makeStyles({
+  table: {
+    minWidthd: 650,
+  },
+});
 
 export default CharacterList;
