@@ -27,3 +27,4 @@ launch.json
 /.vscode
 tools/server.cert
 tools/server.key
+db.json
