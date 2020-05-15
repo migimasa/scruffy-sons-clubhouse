@@ -9,25 +9,17 @@ import CreateCharacterWizardPage from "./characters/CreateCharacterWizardPage";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 
 function App() {
-  const darkTheme = createMuiTheme({
-    palette: {
-      type: "dark",
-    },
-  });
-
   return (
-    <ThemeProvider theme={darkTheme}>
-      <div className="container-fluid">
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/about" component={AboutPage} />
-          <Route path="/characters" component={CharactersPage} />
-          <Route path="/character" component={CreateCharacterWizardPage} />
-          <Route component={PageNotFound} />
-        </Switch>
-      </div>
-    </ThemeProvider>
+    <div className="container-fluid">
+      <Header />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/about" component={AboutPage} />
+        <Route path="/characters" component={CharactersPage} />
+        <Route path="/character" component={CreateCharacterWizardPage} />
+        <Route component={PageNotFound} />
+      </Switch>
+    </div>
   );
 }
 
