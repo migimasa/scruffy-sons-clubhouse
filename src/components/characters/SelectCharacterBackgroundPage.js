@@ -61,13 +61,11 @@ const SelectCharacterBackgroundPage = ({
                 index={index}
                 className={classes.card}
               >
-                <Typography variant="body1" gutterBottom>
-                  {bg.descriptionDetail}
-                </Typography>
+                {bg.descriptionDetail}
               </TextTabPanel>
             );
           })}
-        <CharacterWizardNavigation step={1} {...props} />
+        <CharacterWizardNavigation step={2} {...props} />
       </div>
     </>
   );

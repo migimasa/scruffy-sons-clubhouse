@@ -10,6 +10,8 @@ import Auth from "../../tools/auth/Auth";
 import PropTypes from "prop-types";
 import AuthContext from "../../tools/auth/AuthContext";
 import Callback from "./common/Callback";
+import PrivateRoute from "./common/PrivateRoute";
+import ProfilePage from "./profile/ProfilePage";
 
 const App = ({ history }) => {
   const [tokenRenewalComplete, setTokenRenewalComplete] = useState(false);
@@ -37,9 +39,13 @@ const App = ({ history }) => {
             path="/callback"
             render={(props) => <Callback auth={auth} {...props} />}
           />
+          <PrivateRoute path="/profile" component={ProfilePage} />
           <Route path="/about" component={AboutPage} />
-          <Route path="/characters" component={CharactersPage} />
-          <Route path="/character" component={CreateCharacterWizardPage} />
+          <PrivateRoute path="/characters" component={CharactersPage} />
+          <PrivateRoute
+            path="/character"
+            component={CreateCharacterWizardPage}
+          />
           <Route component={PageNotFound} />
         </Switch>
       </div>

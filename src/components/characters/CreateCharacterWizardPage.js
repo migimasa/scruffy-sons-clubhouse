@@ -5,16 +5,20 @@ import PropTypes from "prop-types";
 import { newCharacter } from "../../../tools/mockData";
 import { loadCharacterBackgrounds } from "../../redux/actions/backgroundActions";
 import { loadCharacterHooks } from "../../redux/actions/hookActions";
+import { saveCharacter } from "../../redux/actions/characterActions";
 import { connect } from "react-redux";
 import SelectCharacterBackgroundPage from "./SelectCharacterBackgroundPage";
 import SelectCharacterHookPage from "./SelectCharacterHookPage";
 import Container from "@material-ui/core/Container";
 import CharacterWizardNavigation from "./CharacterWizardNavigation";
+import ManageCharacterNameForm from "./ManageCharacterNameForm";
+import Typography from "@material-ui/core/Typography";
+import ReviewCharacterInformationPage from "./ReviewCharacterInformationPage";
 
 import styles from "./CreateCharacterWizardPage.less";
 import transitions from "./CharacterWizardTransitions.less";
 
-const CreateCharacterWizardPage = ({ backgrounds, hooks, ...props }) => {
+const CreateCharacterWizardPage = ({ auth, backgrounds, hooks, ...props }) => {
   const [state, updateState] = useState({
     form: {},
     transitions: {
@@ -42,53 +46,48 @@ const CreateCharacterWizardPage = ({ backgrounds, hooks, ...props }) => {
         alert("Loading character hooks failed" + error);
       });
     }
-  }, [character]);
+    const playerId = auth.getPlayerId();
+    setCharacter((prevChar) => ({
+      ...prevChar,
+      playerId: playerId,
+    }));
+  }, []);
 
-  // function characterIsValid() {
-  //   const { characterBackgroundId } = character;
-  //   const errors = {};
+  function handleChange(event) {
+    const { name, value } = event.target;
 
-  //   if (!characterBackgroundId)
-  //     errors.characterBackground = "Character Background is required.";
+    setCharacter((prevChar) => ({
+      ...prevChar,
+      [name]: value,
+    }));
+  }
 
-  //   setErrors(errors);
+  function characterIsValid() {
+    const { name, playerId } = character;
+    const errors = {};
 
-  //   // Character is valid if the errors object still has no properties
-  //   return Object.keys(errors).length === 0;
-  // }
+    if (!name) errors.name = "Name is required.";
+    if (!playerId) errors.playerId = "Player is required";
 
-  // function handleChange(event) {
-  //   const { name, value } = event.target;
+    setErrors(errors);
 
-  //   setCharacter((prevChar) => ({
-  //     ...prevChar,
-  //     [name]: value,
-  //   }));
-  // }
+    return Object.keys(errors).length === 0;
+  }
 
-  // function handleSave(event) {
-  //   event.preventDefault();
-  //   if (!characterIsValid()) return;
-
-  //   setSaving(true);
-  //   //TODO Save Character
-  //   saveCharacter(character)
-  //     .then(() => {})
-  //     .catch((error) => {
-  //       setSaving(false);
-  //       setErrors({ onSave: error.message });
-  //     });
-  // }
-
-  // const updateForm = (key, value) => {
-  //   const { form } = state;
-
-  //   form[key] = value;
-  //   updateState({
-  //     ...state,
-  //     form,
-  //   });
-  // };
+  function handleSave(event) {
+    debugger;
+    event.preventDefault();
+    if (!characterIsValid()) return;
+    setSaving(true);
+    saveCharacter(character)
+      .then(() => {
+        //TODO Alert User Success
+      })
+      .catch((error) => {
+        setSaving(false);
+        setErrors({ onSave: error.message });
+      });
+  }
 
   // Do something on step change
   const onStepChange = () => {
@@ -103,7 +102,7 @@ const CreateCharacterWizardPage = ({ backgrounds, hooks, ...props }) => {
 
   return (
     <>
-      <h3>Create a New Character</h3>
+      <Typography variant="h2">Create a New Character</Typography>
       <Container className="jumbotron">
         <StepWizard
           onStepChange={onStepChange}
@@ -112,19 +111,34 @@ const CreateCharacterWizardPage = ({ backgrounds, hooks, ...props }) => {
           nav={<CharacterWizardProgress />}
           instance={setInstance}
         >
-          <SelectCharacterBackgroundPage
+          <ManageCharacterNameForm
+            hashKey={"CharacterName"}
+            onChange={handleChange}
+            character={character}
+            stepNumber={1}
+          />
+          {/* <SelectCharacterBackgroundPage
             hashKey={"CharacterBackground"}
             backgrounds={backgrounds}
             errors={errors}
             saving={saving}
-          />
-          <SelectCharacterHookPage
+            stepNumber={2}
+          /> */}
+          {/* <SelectCharacterHookPage
             hashKey={"CharacterHooks"}
             hooks={hooks}
             errors={errors}
             saving={saving}
+            stepNumber={3}
+          /> */}
+          <ReviewCharacterInformationPage
+            hashKey={"ReviewInformation"}
+            character={character}
+            errors={errors}
+            saving={saving}
+            stepNumber={2}
+            onSave={handleSave}
           />
-          <Last hashKey={"TheEnd!"} />
         </StepWizard>
       </Container>
     </>
@@ -132,6 +146,7 @@ const CreateCharacterWizardPage = ({ backgrounds, hooks, ...props }) => {
 };
 
 CreateCharacterWizardPage.propTypes = {
+  auth: PropTypes.object.isRequired,
   character: PropTypes.object.isRequired,
   backgrounds: PropTypes.array.isRequired,
   hooks: PropTypes.array.isRequired,

@@ -18,11 +18,14 @@ const Header = ({ auth }) => {
       <Link component={NavLink} to="/about" activeStyle={activeStyle}>
         About
       </Link>
-      {" | "}
-      <Link component={NavLink} to="/characters" activeStyle={activeStyle}>
-        Characters
-      </Link>
-      {" | "}
+      {isAuthenticated() && (
+        <>
+          {" | "}
+          <Link component={NavLink} to="/characters" activeStyle={activeStyle}>
+            Characters
+          </Link>
+        </>
+      )}
       <Button onClick={isAuthenticated() ? logout : login}>
         {isAuthenticated() ? "Log Out" : "Log In"}
       </Button>

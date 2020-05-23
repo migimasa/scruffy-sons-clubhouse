@@ -33,7 +33,7 @@ const HomePage = ({ auth }) => {
 };
 
 HomePage.propTypes = {
-  auth: PropTypes.auth,
+  auth: PropTypes.object,
 };
 
 export default HomePage;

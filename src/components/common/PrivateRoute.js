@@ -33,7 +33,7 @@ function PrivateRoute({ component: Component, scopes, ...rest }) {
 }
 
 PrivateRoute.propTypes = {
-  component: PropTypes.func.isRequired,
+  component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
   scopes: PropTypes.array,
 };
 

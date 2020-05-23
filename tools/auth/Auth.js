@@ -9,6 +9,7 @@ let _idToken = null;
 let _accessToken = null;
 let _scopes = null;
 let _expiresAt = null;
+let _playerId = null;
 
 export default class Auth {
   constructor(history) {
@@ -52,8 +53,6 @@ export default class Auth {
   };
 
   setSession = (authResult) => {
-    console.log(authResult);
-
     // set the time that the access token will expire
     _expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
 
@@ -64,6 +63,7 @@ export default class Auth {
 
     _accessToken = authResult.accessToken;
     _idToken = authResult.idToken;
+    _playerId = authResult.idTokenPayload["http://localhost:3010/playerId"];
     this.scheduleTokenRenewal();
   };
 
@@ -91,6 +91,13 @@ export default class Auth {
       if (profile) this.userProfile = profile;
       callBack(profile, err);
     });
+  };
+
+  getPlayerId = () => {
+    if (!_playerId) {
+      throw new Error("No player id found.");
+    }
+    return _playerId;
   };
 
   userHasScopes(scopes) {

@@ -47,7 +47,7 @@ const SelectCharacterHookPage = ({ hooks, ...props }) => {
               </TextTabPanel>
             );
           })}
-        <CharacterWizardNavigation step={2} {...props} />
+        <CharacterWizardNavigation step={3} {...props} />
       </div>
     </>
   );

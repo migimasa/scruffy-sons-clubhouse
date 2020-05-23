@@ -12,6 +12,7 @@ const CharacterWizardNavigation = ({
   previousStep,
   totalSteps,
   step,
+  saving,
 }) => {
   return (
     <Grid container spacing={3}>
@@ -29,7 +30,9 @@ const CharacterWizardNavigation = ({
             <NavigateNextIcon />
           </IconButton>
         ) : (
-          <Button onClick={nextStep}>Save</Button>
+          <Button onClick={nextStep} disabled={saving}>
+            {saving ? "Saving..." : "Save"}
+          </Button>
         )}
       </Grid>
     </Grid>
@@ -41,5 +44,6 @@ CharacterWizardNavigation.propTypes = {
   previousStep: PropTypes.any,
   totalSteps: PropTypes.number,
   step: PropTypes.number,
+  saving: PropTypes.bool,
 };
 export default CharacterWizardNavigation;
