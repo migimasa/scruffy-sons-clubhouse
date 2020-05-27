@@ -66,7 +66,8 @@ server.listen(port, () => {
 //Centeralized Logic
 
 function validateCharacter(character) {
-  if (!character.name) return "Name is required.";
+  console.log(`character name: ${character.name}`);
+  if (!character.name) return JSON.stringify(character);
   if (!character.partyId) return "Party is required.";
   if (!character.playerId) return "Player is required.";
   return "";

@@ -10,7 +10,8 @@ export function getCharacters() {
 
 export function saveCharacter(character) {
   const url = `${baseUrl}/characters/`;
-
+  debugger;
+  console.log(JSON.stringify(character));
   return fetch(url, {
     method: "POST",
     header: { "content-type": "application/json" },

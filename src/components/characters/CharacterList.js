@@ -56,7 +56,7 @@ CharacterList.propTypes = {
 
 const useStyles = makeStyles({
   table: {
-    minWidthd: 650,
+    minWidth: 650,
   },
 });
 

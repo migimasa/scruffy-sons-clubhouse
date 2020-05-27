@@ -10,12 +10,10 @@ import { connect } from "react-redux";
 import SelectCharacterBackgroundPage from "./SelectCharacterBackgroundPage";
 import SelectCharacterHookPage from "./SelectCharacterHookPage";
 import Container from "@material-ui/core/Container";
-import CharacterWizardNavigation from "./CharacterWizardNavigation";
 import ManageCharacterNameForm from "./ManageCharacterNameForm";
 import Typography from "@material-ui/core/Typography";
 import ReviewCharacterInformationPage from "./ReviewCharacterInformationPage";
 
-import styles from "./CreateCharacterWizardPage.less";
 import transitions from "./CharacterWizardTransitions.less";
 
 const CreateCharacterWizardPage = ({ auth, backgrounds, hooks, ...props }) => {
@@ -79,7 +77,8 @@ const CreateCharacterWizardPage = ({ auth, backgrounds, hooks, ...props }) => {
     event.preventDefault();
     if (!characterIsValid()) return;
     setSaving(true);
-    saveCharacter(character)
+    props
+      .saveCharacter(character)
       .then(() => {
         //TODO Alert User Success
       })
@@ -152,6 +151,7 @@ CreateCharacterWizardPage.propTypes = {
   hooks: PropTypes.array.isRequired,
   loadCharacterBackgrounds: PropTypes.func.isRequired,
   loadCharacterHooks: PropTypes.func.isRequired,
+  saveCharacter: PropTypes.func.isRequired,
   errors: PropTypes.object,
 };
 
@@ -168,25 +168,10 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   loadCharacterBackgrounds,
   loadCharacterHooks,
+  saveCharacter,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(CreateCharacterWizardPage);
-
-const Last = (...props) => {
-  const submit = () => {
-    alert("You did it! Yay!"); //eslint-disable-line
-  };
-
-  return (
-    <div>
-      <div className={"text-center"}>
-        <h3>This is the last step in the example!</h3>
-        <hr />
-      </div>
-      <CharacterWizardNavigation step={3} {...props} nextStep={submit} />
-    </div>
-  );
-};
