@@ -28,7 +28,6 @@ export function loadCharacters() {
 export function saveCharacter(character) {
   //eslint-disable-next-line no-unused-vars
   return function (dispatch, getState) {
-    debugger;
     dispatch(beginApiCall());
     return characterApi
       .saveCharacter(character)

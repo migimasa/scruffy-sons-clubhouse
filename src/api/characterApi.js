@@ -9,14 +9,13 @@ export function getCharacters() {
 }
 
 export function saveCharacter(character) {
-  const url = `${baseUrl}/characters/`;
-  debugger;
-  console.log(JSON.stringify(character));
-  return fetch(url, {
+  const url = `${baseUrl}/characters`;
+
+  const request = {
     method: "POST",
-    header: { "content-type": "application/json" },
+    header: { "Content-Type": "application/json" },
     body: JSON.stringify(character),
-  })
-    .then(handleResponse)
-    .catch(handleError);
+  };
+  console.log(request);
+  return fetch(url, request).then(handleResponse).catch(handleError);
 }

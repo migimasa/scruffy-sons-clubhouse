@@ -45,9 +45,11 @@ const CreateCharacterWizardPage = ({ auth, backgrounds, hooks, ...props }) => {
       });
     }
     const playerId = auth.getPlayerId();
+    const partyId = "7c60e6fd-52a4-4459-8600-a89e717736a1";
     setCharacter((prevChar) => ({
       ...prevChar,
       playerId: playerId,
+      partyId: partyId,
     }));
   }, []);
 
@@ -73,7 +75,6 @@ const CreateCharacterWizardPage = ({ auth, backgrounds, hooks, ...props }) => {
   }
 
   function handleSave(event) {
-    debugger;
     event.preventDefault();
     if (!characterIsValid()) return;
     setSaving(true);
